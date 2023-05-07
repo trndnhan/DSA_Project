@@ -1,13 +1,13 @@
 package view;
 
+import control.CoreGame;
+
 import java.awt.BorderLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
-import control.CoreGame;
 
 public class GPanel extends JPanel implements MouseListener {
     private PanelPlayer p;
@@ -48,7 +48,7 @@ public class GPanel extends JPanel implements MouseListener {
 
                     if (!coreGame.open(i, j)) {
 
-                        if (coreGame.isComplete()) {
+                        if (coreGame.isLost()) {
 
                             int option = JOptionPane.showConfirmDialog(this, "Wanna play again ?", "You lost!",
                                     JOptionPane.YES_NO_OPTION);
@@ -58,7 +58,7 @@ public class GPanel extends JPanel implements MouseListener {
                             } else {
                                 coreGame.fullTrue();
                             }
-                        } else if (coreGame.isEnd()) {
+                        } else if (coreGame.isWon()) {
 
                             int option = JOptionPane.showConfirmDialog(this, "Wanna play again ?", "You win!",
                                     JOptionPane.YES_NO_OPTION);
@@ -103,7 +103,7 @@ public class GPanel extends JPanel implements MouseListener {
         this.h = h;
     }
 
-    public CoreGame getWorld() {
+    public CoreGame getCoreGame() {
         return coreGame;
     }
 

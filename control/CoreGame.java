@@ -1,6 +1,7 @@
 package control;
 
 import java.util.Random;
+import java.util.Stack;
 
 import view.MineButton;
 import view.GPanel;
@@ -11,9 +12,10 @@ public class CoreGame {
     private MineButton[][] arrayButton;
     private int[][] arrayBomb;
     private boolean[][] arrayBoolean;
-    private boolean isComplete;
-    private boolean isEnd;
+    private boolean isLost; //Change from isComplete to isLost
+    private boolean isWon; //Change from isEnd to isWon
     private int bomb;
+    private Stack<int[]> stateStack;
 
     private GPanel game;
 
@@ -25,6 +27,7 @@ public class CoreGame {
         arrayButton = new MineButton[w][h];
         arrayBomb = new int[w][h];
         arrayBoolean = new boolean[w][h];
+        stateStack = new Stack<int[]>();
 
         rd = new Random();
 
@@ -35,8 +38,13 @@ public class CoreGame {
 
     public boolean open(int i, int j) {
 
-        if (!isComplete && !isEnd) {
+        if (!isLost && !isWon) {
+
             if (!arrayBoolean[i][j]) {
+
+                int[] array = {i, j};
+                stateStack.push(array);
+
                 if (arrayBomb[i][j] == 0) {
 
                     arrayBoolean[i][j] = true;
@@ -44,7 +52,7 @@ public class CoreGame {
                     arrayButton[i][j].repaint();
 
                     if (checkWin()) {
-                        isEnd = true;
+                        isWon = true;
 
                         return false;
                     }
@@ -61,7 +69,7 @@ public class CoreGame {
                         arrayButton[i][j].repaint();
 
                         if (checkWin()) {
-                            isEnd = true;
+                            isWon = true;
 
                             return false;
                         }
@@ -74,7 +82,7 @@ public class CoreGame {
             if (arrayBomb[i][j] == -1) {
                 arrayButton[i][j].setNumber(11);
                 arrayButton[i][j].repaint();
-                isComplete = true;
+                isLost = true;
 
                 for (int j2 = 0; j2 < arrayBoolean.length; j2++) {
                     for (int k = 0; k < arrayBoolean[i].length; k++) {
@@ -91,7 +99,7 @@ public class CoreGame {
             } else {
 
                 if (checkWin()) {
-                    isEnd = true;
+                    isWon = true;
 
                     return false;
                 }
@@ -120,44 +128,28 @@ public class CoreGame {
     }
 
     public void point() {
-        for (int i = 0; i < arrayBomb.length; i++) {
-            for (int j = 0; j < arrayBomb[i].length; j++) {
+        for (int i = 0; i < arrayBomb.length; i++)
+            for (int j = 0; j < arrayBomb[i].length; j++)
                 if (arrayBomb[i][j] == 0) {
                     int count = 0;
-                    for (int l = i - 1; l <= i + 1; l++) {
-                        for (int k = j - 1; k <= j + 1; k++) {
+                    for (int l = i - 1; l <= i + 1; l++)
+                        for (int k = j - 1; k <= j + 1; k++)
                             if (l >= 0 && l <= arrayBomb.length - 1 && k >= 0 && k <= arrayBomb[i].length - 1)
-                                if (arrayBomb[l][k] == -1) {
+                                if (arrayBomb[l][k] == -1)
                                     count++;
-                                }
-                        }
-                    }
                     arrayBomb[i][j] = count;
                 }
-            }
-        }
     }
 
     public void createArrayBomb(int boom, int w, int h) {
-        int locationX = rd.nextInt(w);
-        int locationY = rd.nextInt(h);
-
-        arrayBomb[locationX][locationY] = -1;
-        int count = 1;
+        //Simplify the code
+        int count = 0;
         while (count != boom) {
-            locationX = rd.nextInt(w);
-            locationY = rd.nextInt(h);
+            int locationX = rd.nextInt(w);
+            int locationY = rd.nextInt(h);
             if (arrayBomb[locationX][locationY] != -1) {
-
                 arrayBomb[locationX][locationY] = -1;
-
-                count = 0;
-                for (int i = 0; i < arrayBomb.length; i++) {
-                    for (int j = 0; j < arrayBomb[i].length; j++) {
-                        if (arrayBomb[i][j] == -1)
-                            count++;
-                    }
-                }
+                count += 1;
             }
         }
 
@@ -170,6 +162,15 @@ public class CoreGame {
                     arrayBoolean[i][j] = true;
                 }
             }
+        }
+    }
+
+    public void undo() {
+        if (!stateStack.empty() && !isLost && !isWon) {
+            int[] array = stateStack.pop();
+            arrayButton[array[0]][array[1]].setNumber(-1);
+            arrayButton[array[0]][array[1]].repaint();
+            arrayBoolean[array[0]][array[1]] = false;
         }
     }
 
@@ -189,19 +190,19 @@ public class CoreGame {
         this.arrayBoolean = arrayBoolean;
     }
 
-    public boolean isComplete() {
-        return isComplete;
+    public boolean isLost() {
+        return isLost;
     }
 
-    public void setComplete(boolean isComplete) {
-        this.isComplete = isComplete;
+    public void setLost(boolean isLost) {
+        this.isLost = isLost;
     }
 
-    public boolean isEnd() {
-        return isEnd;
+    public boolean isWon() {
+        return isWon;
     }
 
-    public void setEnd(boolean isEnd) {
-        this.isEnd = isEnd;
+    public void setWon(boolean isEnd) {
+        this.isWon = isEnd;
     }
 }
