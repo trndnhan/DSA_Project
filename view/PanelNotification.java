@@ -11,6 +11,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import static java.lang.String.valueOf;
+
 public class PanelNotification extends JPanel {
 
     /**
@@ -20,7 +22,7 @@ public class PanelNotification extends JPanel {
 
     private JPanel p11, p12, p13;
 
-    private LableNumber lbTime, lbBoom;
+    private LabelNumber lbTime, lbBoom;
 
     private GPanel game;
 
@@ -32,10 +34,10 @@ public class PanelNotification extends JPanel {
     public PanelNotification(GPanel game) {
         this.game = game;
 
-        lbTime = game.getWorld().getLbTime();
-        lbBoom = game.getWorld().getLbBoom();
+        lbTime = game.getCoreGame().getLbTime();
+        lbBoom = game.getCoreGame().getLbBoom();
 
-        bt = game.getWorld().getButtonSmile();
+        bt = game.getCoreGame().getButtonSmile();
         setLayout(new BorderLayout());
 
         setBorder(BorderFactory.createLoweredBevelBorder());
@@ -44,10 +46,10 @@ public class PanelNotification extends JPanel {
         add(p12 = new JPanel(), BorderLayout.EAST);
         add(p13 = new JPanel(), BorderLayout.CENTER);
 
-        p11.add(lbBoom = new LableNumber(this, "000"));
+        p11.add(lbBoom = new LabelNumber(this, "000"));
         updateLbBoom();
 
-        p12.add(lbTime = new LableNumber(this, "000"));
+        p12.add(lbTime = new LabelNumber(this, "000"));
 
         time = new Timer(1000, new ActionListener() {
 
@@ -77,7 +79,10 @@ public class PanelNotification extends JPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                if (getGame().getCoreGame().isEnd() || getGame().getCoreGame().isComplete()) {
+                if (getGame().getCoreGame().isEnd()) {
+                    getGame().getGameFrame().setVisible(false);
+                    new GFrame(game.getW(), game.getH(), game.getBoom());
+                } else if (getGame().getCoreGame().isComplete()) {
                     getGame().getGameFrame().setVisible(false);
                     new GFrame(game.getW(), game.getH(), game.getBoom());
                 } else {
@@ -102,9 +107,9 @@ public class PanelNotification extends JPanel {
 
     public void updateLbTime() {
         if (nowTime > 999) {
-            lbTime.setNumber("voCuc");
+            lbTime.setNumber("infinity");
         } else {
-            String cTime = String.valueOf(nowTime);
+            String cTime = valueOf(nowTime);
             if (cTime.length() == 1) {
                 lbTime.setNumber("00" + cTime);
             } else if (cTime.length() == 2) {
@@ -118,7 +123,7 @@ public class PanelNotification extends JPanel {
     }
 
     public void updateLbBoom() {
-        String boom = String.valueOf(game.getBoom() - game.getCoreGame().getCo());
+        String boom = valueOf(game.getBoom() - game.getCoreGame().getCo());
         if (boom.length() == 1) {
             lbBoom.setNumber("00" + boom);
         } else if (boom.length() == 2) {
