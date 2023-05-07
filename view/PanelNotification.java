@@ -22,7 +22,7 @@ public class PanelNotification extends JPanel {
 
     private JPanel p11, p12, p13;
 
-    private LabelNumber lbTime, lbBoom;
+    private LabelNumber lbTime, lbBomb;
 
     private GPanel game;
 
@@ -35,7 +35,7 @@ public class PanelNotification extends JPanel {
         this.game = game;
 
         lbTime = game.getCoreGame().getLbTime();
-        lbBoom = game.getCoreGame().getLbBoom();
+        lbBomb = game.getCoreGame().getLbBomb();
 
         bt = game.getCoreGame().getButtonSmile();
         setLayout(new BorderLayout());
@@ -46,7 +46,7 @@ public class PanelNotification extends JPanel {
         add(p12 = new JPanel(), BorderLayout.EAST);
         add(p13 = new JPanel(), BorderLayout.CENTER);
 
-        p11.add(lbBoom = new LabelNumber(this, "000"));
+        p11.add(lbBomb = new LabelNumber(this, "000"));
         updateLbBoom();
 
         p12.add(lbTime = new LabelNumber(this, "000"));
@@ -73,7 +73,7 @@ public class PanelNotification extends JPanel {
                         JOptionPane.YES_NO_OPTION);
                 if (option == JOptionPane.YES_OPTION) {
                     getGame().getGFrame().setVisible(false);
-                    new GFrame(game.getW(), game.getH(), game.getBoom());
+                    new GFrame(game.getW(), game.getH(), game.getBomb());
                 }
             }
 
@@ -81,10 +81,10 @@ public class PanelNotification extends JPanel {
             public void mousePressed(MouseEvent e) {
                 if (getGame().getCoreGame().isEnd()) {
                     getGame().getGameFrame().setVisible(false);
-                    new GFrame(game.getW(), game.getH(), game.getBoom());
+                    new GFrame(game.getW(), game.getH(), game.getBomb());
                 } else if (getGame().getCoreGame().isComplete()) {
                     getGame().getGameFrame().setVisible(false);
-                    new GFrame(game.getW(), game.getH(), game.getBoom());
+                    new GFrame(game.getW(), game.getH(), game.getBomb());
                 } else {
                     bt.setStage(ButtonSmile.press);
                     bt.repaint();
@@ -123,15 +123,15 @@ public class PanelNotification extends JPanel {
     }
 
     public void updateLbBoom() {
-        String boom = valueOf(game.getBoom() - game.getCoreGame().getCo());
-        if (boom.length() == 1) {
-            lbBoom.setNumber("00" + boom);
-        } else if (boom.length() == 2) {
-            lbBoom.setNumber("0" + boom);
+        String bomb = valueOf(game.getBomb() - game.getCoreGame().getCo());
+        if (bomb.length() == 1) {
+            lbBomb.setNumber("00" + bomb);
+        } else if (bomb.length() == 2) {
+            lbBomb.setNumber("0" + bomb);
         } else {
-            lbBoom.setNumber("0" + boom);
+            lbBomb.setNumber("0" + bomb);
         }
-        lbBoom.repaint();
+        lbBomb.repaint();
     }
 
     public GPanel getGame() {

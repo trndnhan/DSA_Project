@@ -5,7 +5,7 @@ import java.awt.Graphics;
 
 import javax.swing.JLabel;
 
-public class LabelNumber extends JLabel {
+public class LabelNumber {
 
     /**
      *
