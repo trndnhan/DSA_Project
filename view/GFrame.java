@@ -1,10 +1,12 @@
 package view;
 
- import javax.swing.ImageIcon;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import java.awt.*;  
+import java.awt.event.*;  
 
 import javafx.event.ActionEvent;
 import model.LoadData;
@@ -21,23 +23,22 @@ public class GFrame extends JFrame {
     private JMenu menu;
     private JMenuItem undo;
 
-    private JMenuBar mnb;
-    private JMenu menu;
     private JMenuItem Beginner,Intermediate,Expert,NewGame,Exit;
 
     public GFrame(int w, int h, int bomb) {
+
+
+        loadData = new LoadData();
 
         this.setJMenuBar(this.mnb = new JMenuBar());
         this.mnb.add(this.menu = new JMenu("Game"));
         this.menu.add(this.undo = new JMenuItem("Undo"));
 
-        loadData = new LoadData();
-
         setJMenuBar(mnb = new JMenuBar());
         mnb.add(menu = new JMenu("Game"));
 
         menu.add(NewGame = new JMenuItem("New Game"));
-        menu.addSeperator();
+        menu.addSeparator();
 
         menu.add(Beginner = new JMenuItem("Beginner")); 
         menu.add(Intermediate = new JMenuItem("Intermediate"));
@@ -51,7 +52,7 @@ public class GFrame extends JFrame {
         if (w==8) {
             Beginner.setIcon(new ImageIcon(loadData.getListImage().get("tick")));
          } else if (w==16) {
-            Intermediate.setIcon (new ImageIcon(loadData.getListImage().get("tick"))):
+            Intermediate.setIcon (new ImageIcon(loadData.getListImage().get("tick")));
          } else {
             Expert.setIcon(new ImageIcon(loadData.getListImage().get("tick")));
          }
