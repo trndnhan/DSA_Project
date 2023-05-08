@@ -16,7 +16,7 @@ public class PanelPlayer extends JPanel {
 
         setLayout(new GridLayout(game.getW(), game.getH()));
 
-        arrayButton = game.getCoreGame().getArrayButton();
+        arrayButton = game.getWorld().getArrayButton();
 
         setBorder(BorderFactory.createLoweredBevelBorder());
         for (int i = 0; i < arrayButton.length; i++) {
