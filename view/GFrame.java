@@ -11,7 +11,6 @@ import java.awt.event.*;
 import javafx.event.ActionEvent;
 import model.LoadData;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GFrame extends JFrame {
@@ -60,35 +59,36 @@ public class GFrame extends JFrame {
 
          Beginner.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                    gameFrame.setVisible(false);
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                    Window gameFrame;
+                    setVisible(false);
                     new GFrame(8, 8, 10);
          }
         });
         Intermediate.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                    gameFrame.setVisible(false);
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                    setVisible(false);
                     new GFrame(16,16, 40);
          }
         });
         Expert.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                    gameFrame.setVisible(false);
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                    setVisible(false);
                     new GFrame(30, 16, 99);
          }
         });
         NewGame.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                    gameFrame.setVisible(false);
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                    setVisible(false);
                     new GFrame(w, h, bomb);
          }
         });
         Exit.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
                     System.exit(0);
          }
         });
@@ -96,11 +96,12 @@ public class GFrame extends JFrame {
         add(gPanel = new GPanel(w, h, bomb, this));
 
         this.undo.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(java.awt.event.ActionEvent e) {
                 gPanel.getCoreGame().undo();
             }
         });
 
+        add(gPanel = new GPanel(w,h,bomb,this));
         setIconImage(loadData.getListImage().get("title"));
         pack();
         setResizable(false);
