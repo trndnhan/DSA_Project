@@ -1,6 +1,10 @@
 package view;
 
-import java.awt.GridLayout;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.*;
 
 
@@ -22,23 +26,25 @@ public class PanelNotification extends JPanel {
     private Timer time;
     private int nowTime;
 
-    public PanelNotification(GPanel game) {
+    public PanelNotification(final GPanel game) {
         this.game = game;
-
-        lbTime = game.getCoreGame().getLbTime();
-        lbBomb = game.getCoreGame().getLbBomb();
-
-        bt = game.getCoreGame().getButtonSmile();
-        setLayout(new BorderLayout());
-
-        setBorder(BorderFactory.createLoweredBevelBorder());
-
-        add(p11 = new JPanel(), BorderLayout.WEST);
-        add(p12 = new JPanel(), BorderLayout.EAST);
-        add(p13 = new JPanel(), BorderLayout.CENTER);
-
-        p11.add(lbBomb = new LabelNumber(this, "000"));
-        updateLbBoom();
+        this.lbTime = game.getCoreGame().getLbTime();
+        this.lbBomb = game.getCoreGame().getLbBomb();
+        this.bt = game.getCoreGame().getButtonSmile();
+        this.setLayout(new BorderLayout());
+        this.setBorder(BorderFactory.createLoweredBevelBorder());
+        this.add(this.p11 = new JPanel(), "West");
+        this.add(this.p12 = new JPanel(), "East");
+        this.add(this.p13 = new JPanel(), "Center");
+        this.p11.add(this.lbBomb = new LabelNumber(this, "000"));
+        this.updateLbBomb();
+        this.p12.add(this.lbTime = new LabelNumber(this, "000"));
+        this.time = new Timer(1000, new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ++PanelNotification.this.nowTime;
+                PanelNotification.this.updateLbTime();
+            }
+        });
 
         p12.add(lbTime = new LabelNumber(this, "000"));
 
@@ -51,78 +57,74 @@ public class PanelNotification extends JPanel {
             }
         });
 
-        p13.add(bt = new ButtonSmile(this));
-
-        bt.addMouseListener(new MouseListener() {
+        this.p13.add(this.bt = new ButtonSmile(this));
+        this.bt.addMouseListener(new MouseListener() {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                bt.setStage(ButtonSmile.now);
-                bt.repaint();
-
-                int option = JOptionPane.showConfirmDialog(null, "Are you play new game?", "Notification",
-                        JOptionPane.YES_NO_OPTION);
-                if (option == JOptionPane.YES_OPTION) {
-                    getGame().getGFrame().setVisible(false);
+                PanelNotification.this.bt.setStage(4);
+                PanelNotification.this.bt.repaint();
+                int option = JOptionPane.showConfirmDialog((Component)null, "Are you play new game?", "Notification", 0);
+                if (option == 0) {
+                    PanelNotification.this.getGame().getGameFrame().setVisible(false);
                     new GFrame(game.getW(), game.getH(), game.getBomb());
                 }
+
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-                if (getGame().getCoreGame().isEnd()) {
-                    getGame().getGameFrame().setVisible(false);
-                    new GFrame(game.getW(), game.getH(), game.getBomb());
-                } else if (getGame().getCoreGame().isComplete()) {
-                    getGame().getGameFrame().setVisible(false);
-                    new GFrame(game.getW(), game.getH(), game.getBomb());
+                if (!PanelNotification.this.getGame().getWorld().isEnd() && !PanelNotification.this.getGame().getWorld().isComplete()) {
+                    PanelNotification.this.bt.setStage(2);
+                    PanelNotification.this.bt.repaint();
                 } else {
-                    bt.setStage(ButtonSmile.press);
-                    bt.repaint();
+                    PanelNotification.this.getGame().getGameFrame().setVisible(false);
+                    new GFrame(game.getW(), game.getH(), game.getBomb());
                 }
+
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
             }
 
-            @Override
             public void mouseEntered(MouseEvent e) {
             }
 
-            @Override
             public void mouseClicked(MouseEvent e) {
             }
         });
     }
 
     public void updateLbTime() {
-        if (nowTime > 999) {
-            lbTime.setNumber("infinity");
+        if (this.nowTime > 999) {
+            this.lbTime.setNumber("voCuc");
         } else {
-            String cTime = valueOf(nowTime);
+            String cTime = String.valueOf(this.nowTime);
             if (cTime.length() == 1) {
-                lbTime.setNumber("00" + cTime);
+                this.lbTime.setNumber("00" + cTime);
             } else if (cTime.length() == 2) {
-                lbTime.setNumber("0" + cTime);
+                this.lbTime.setNumber("0" + cTime);
             } else {
-                lbTime.setNumber(cTime);
+                this.lbTime.setNumber(cTime);
             }
 
-            lbTime.repaint();
+            this.lbTime.repaint();
         }
+
     }
 
-    public void updateLbBoom() {
-        String boom = valueOf(game.getBomb() - game.getCoreGame().getCo());
-        if (boom.length() == 1) {
-            lbBomb.setNumber("00" + boom);
-        } else if (boom.length() == 2) {
-            lbBomb.setNumber("0" + boom);
+    public void updateLbBomb() {
+        String bomb = String.valueOf(this.game.getBomb() - this.game.getWorld().getCo());
+        if (bomb.length() == 1) {
+            this.lbBomb.setNumber("00" + bomb);
+        } else if (bomb.length() == 2) {
+            this.lbBomb.setNumber("0" + bomb);
         } else {
-            lbBomb.setNumber("0" + boom);
+            this.lbBomb.setNumber("0" + bomb);
         }
-        lbBomb.repaint();
+
+        this.lbBomb.repaint();
     }
 
     public GPanel getGame() {

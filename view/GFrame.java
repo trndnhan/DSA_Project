@@ -1,36 +1,28 @@
 package view;
 
-import java.awt.Component;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+import javax.swing.*;
+
 import model.LoadData;
 
 
 
-public class GFrame extends JFrame {
+public class GameFrame extends JFrame {
+    private static final long serialVersionUID = 1L;
 
-    private LoadData loadData;
-    
-    private JMenuBar mnb;
-    private GPanel gPanel;
-    private JMenu menu;
-    private JMenuItem undo;
-
+    private LoadData loadData = new LoadData();
+    private GPanel gamePanel;
     private JMenuBar mnb;
     private JMenu menu;
-    private JMenuItem Beginner,Intermediate,Expert,NewGame,Exit;
+    private JMenuItem undo, Beginner, Intermediate, Expert, NewGame, Exit;
 
-    public GFrame(int w, int h, int bomb) {
+
+    public void GFrame(int w, int h, int bomb) {
 
         this.setJMenuBar(this.mnb = new JMenuBar());
         this.mnb.add(this.menu = new JMenu("Game"));
-        this.menu.add(this.undo = new JMenuItem("Undo"));
+//        this.menu.add(this.undo = new JMenuItem("Undo"));
 
         loadData = new LoadData();
 
@@ -93,14 +85,14 @@ public class GFrame extends JFrame {
          }
         });
 
-        add(gPanel = new GPanel(w, h, bomb, this));
+        add(gamePanel = new GPanel(w, h, bomb, this));
 
         this.undo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                gPanel.getCoreGame().undo();
+                gamePanel.getCoreGame().undo();
             }
         });
-
+        this.add(this.gamePanel = new GPanel(w, h, bomb, this));
         setIconImage(loadData.getListImage().get("title"));
         pack();
         setResizable(false);
@@ -114,7 +106,7 @@ public class GFrame extends JFrame {
     }
 
     public LoadData getLoadData() {
-        return loadData;
+        return this.loadData;
     }
 
     public void setLoadData(LoadData loadData) {
@@ -122,11 +114,10 @@ public class GFrame extends JFrame {
     }
 
     public GPanel getGamePanel() {
-        return gPanel;
+        return this.gamePanel;
     }
 
-    public void setGamePanel(GPanel gPanel) {
-        this.gPanel = gPanel;
+    public void setGamePanel(GPanel gamePanel) {
+        this.gamePanel = gamePanel;
     }
-
 }
