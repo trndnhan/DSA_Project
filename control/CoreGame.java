@@ -86,7 +86,10 @@ public class CoreGame {
         }
 
         return true;
+
+    public void fullTrue() {
     }
+}
 
     public void Pflat(int i, int j) {
 		if (!arrayBoolean[i][j]) {
@@ -289,3 +292,17 @@ public class CoreGame {
         this.isEnd = isEnd;
     }
 }
+
+    public boolean open(int i, int j) {
+        return false;
+    }
+
+    public boolean isComplete() {
+        return false;
+    }
+
+    public boolean isEnd() {
+        return false;
+    }
+
+
