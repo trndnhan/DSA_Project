@@ -1,8 +1,10 @@
 package view;
 
+
 import java.awt.Dimension;
 import java.awt.Graphics;
-
+import java.awt.Image;
+import java.awt.image.ImageObserver;
 import javax.swing.JLabel;
 
 public class LabelNumber extends JLabel {

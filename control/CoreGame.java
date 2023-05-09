@@ -1,6 +1,10 @@
 package control;
 
 import java.util.Random;
+import view.MineButton;
+import view.ButtonSmile;
+
+import view.LabelNumber;
 
 import view.MineButton;
 import view.GPanel;

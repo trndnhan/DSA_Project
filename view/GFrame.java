@@ -1,16 +1,17 @@
 package view;
 
- import javax.swing.ImageIcon;
+import java.awt.Component;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-
-import javafx.event.ActionEvent;
 import model.LoadData;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 
 public class GFrame extends JFrame {
 
