@@ -112,5 +112,4 @@ public class GFrame extends JFrame {
     public void setGamePanel(GPanel gPanel) {
         this.gPanel = gPanel;
     }
-
 }
