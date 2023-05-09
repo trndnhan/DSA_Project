@@ -61,28 +61,28 @@ public class GFrame extends JFrame {
          Beginner.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    gameFrame.setVisible(false);
+                    GFrame.setVisible(false);
                     new GFrame(8, 8, 10);
          }
         });
         Intermediate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    gameFrame.setVisible(false);
+                    GFrame.setVisible(false);
                     new GFrame(16,16, 40);
          }
         });
         Expert.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    gameFrame.setVisible(false);
+                    GFrame.setVisible(false);
                     new GFrame(30, 16, 99);
          }
         });
         NewGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    gameFrame.setVisible(false);
+                    GFrame.setVisible(false);
                     new GFrame(w, h, bomb);
          }
         });

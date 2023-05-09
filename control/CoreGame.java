@@ -29,6 +29,8 @@ public class CoreGame {
 >>>>>>> 87d476e76c239b9069d6fd1121ac688432a29e64
 
     private GPanel game;
+    private LabelNumber lbTime;
+    private LabelNumber lbBoom;
 
     public CoreGame(int w, int h, int bomb, GPanel game) {
 
@@ -88,6 +90,10 @@ public class CoreGame {
         return true;
 
     public void fullTrue() {
+    }
+
+    public boolean isEnd() {
+        return this.isEnd;
     }
 }
 
@@ -276,33 +282,37 @@ public class CoreGame {
         this.arrayBoolean = arrayBoolean;
     }
 
-    public boolean isComplete() {
-        return isComplete;
+        public boolean isComplete() {
+            return this.isComplete;
+        }
+
+        public void setComplete(boolean isComplete) {
+            this.isComplete = isComplete;
+        }
+
+        public boolean isEnd() {
+            return this.isEnd;
+        }
+
+        public void setEnd(boolean isEnd) {
+            this.isEnd = isEnd;
+        }
+    }
+    public void setLbTime(LabelNumber lbTime) {
+        this.lbTime = lbTime;
     }
 
-    public void setComplete(boolean isComplete) {
-        this.isComplete = isComplete;
+    public LabelNumber getLbBoom() {
+        return this.lbBoom;
     }
 
-    public boolean isEnd() {
-        return isEnd;
+    public void setLbBoom(LabelNumber lbBoom) {
+        this.lbBoom = lbBoom;
     }
 
-    public void setEnd(boolean isEnd) {
-        this.isEnd = isEnd;
-    }
-}
-
-    public boolean open(int i, int j) {
-        return false;
     }
 
-    public boolean isComplete() {
-        return false;
-    }
 
-    public boolean isEnd() {
-        return false;
-    }
+
 
 

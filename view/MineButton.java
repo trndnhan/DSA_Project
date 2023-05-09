@@ -23,6 +23,8 @@ public class MineButton extends JButton {
         setPreferredSize(new Dimension(30, 30));
     }
 
+
+
     @Override
     public void paint(Graphics g) {
         switch (number) {
