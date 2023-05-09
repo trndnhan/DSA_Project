@@ -5,33 +5,25 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import java.awt.*;  
-import java.awt.event.*;  
-
-import javafx.event.ActionEvent;
 import model.LoadData;
-
 import java.awt.event.ActionListener;
 
 public class GFrame extends JFrame {
 
     private LoadData loadData;
-    
     private JMenuBar mnb;
     private GPanel gPanel;
     private JMenu menu;
-    private JMenuItem undo;
-
     private JMenuItem Beginner,Intermediate,Expert,NewGame,Exit;
+    private static final long serialVersionUID = 1L;
 
     public GFrame(int w, int h, int bomb) {
-
 
         loadData = new LoadData();
 
         this.setJMenuBar(this.mnb = new JMenuBar());
         this.mnb.add(this.menu = new JMenu("Game"));
-        this.menu.add(this.undo = new JMenuItem("Undo"));
+        this.menu.add(new JMenuItem("Undo"));
 
         setJMenuBar(mnb = new JMenuBar());
         mnb.add(menu = new JMenu("Game"));
@@ -60,7 +52,6 @@ public class GFrame extends JFrame {
          Beginner.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                    Window gameFrame;
                     setVisible(false);
                     new GFrame(8, 8, 10);
          }
@@ -94,14 +85,6 @@ public class GFrame extends JFrame {
         });
 
         add(gPanel = new GPanel(w, h, bomb, this));
-
-        this.undo.addActionListener(new ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                gPanel.getCoreGame().undo();
-            }
-        });
-
-        add(gPanel = new GPanel(w,h,bomb,this));
         setIconImage(loadData.getListImage().get("title"));
         pack();
         setResizable(false);
