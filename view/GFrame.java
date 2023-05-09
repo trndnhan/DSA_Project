@@ -14,7 +14,7 @@ import model.LoadData;
 
 
 
-public class GameFrame extends JFrame {
+public class GFrame extends JFrame {
 
     private LoadData loadData = new LoadData();
     private GPanel gamePanel;
@@ -35,7 +35,7 @@ public class GameFrame extends JFrame {
         mnb.add(menu = new JMenu("Game"));
 
         menu.add(NewGame = new JMenuItem("New Game"));
-        menu.addSeperator();
+        menu.addSeparator();
 
         menu.add(Beginner = new JMenuItem("Beginner")); 
         menu.add(Intermediate = new JMenuItem("Intermediate"));
@@ -58,28 +58,28 @@ public class GameFrame extends JFrame {
          Beginner.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    GFrame.setVisible(false);
+                    setVisible(false);
                     new GFrame(8, 8, 10);
          }
         });
         Intermediate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    GFrame.setVisible(false);
+                    setVisible(false);
                     new GFrame(16,16, 40);
          }
         });
         Expert.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    GFrame.setVisible(false);
+                    setVisible(false);
                     new GFrame(30, 16, 99);
          }
         });
         NewGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    GFrame.setVisible(false);
+                    setVisible(false);
                     new GFrame(w, h, bomb);
          }
         });
@@ -91,13 +91,6 @@ public class GameFrame extends JFrame {
         });
 
         add(gamePanel = new GPanel(w, h, bomb, this));
-
-        this.undo.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                gamePanel.getCoreGame().undo();
-            }
-        });
-        this.add(this.gamePanel = new GPanel(w, h, bomb, this));
         setIconImage(loadData.getListImage().get("title"));
         pack();
         setResizable(false);
