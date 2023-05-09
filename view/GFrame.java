@@ -1,102 +1,89 @@
 package view;
 
+import java.awt.Component;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import model.LoadData;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.*;
-
-import model.LoadData;
-
-
 
 public class GFrame extends JFrame {
-
     private LoadData loadData = new LoadData();
     private GPanel gamePanel;
     private JMenuBar mnb;
     private JMenu menu;
-    private JMenuItem Beginner,Intermediate,Expert,NewGame,Exit;
-    private static final long serialVersionUID = 1L;
+    private JMenuItem basic;
+    private JMenuItem normal;
+    private JMenuItem hard;
+    private JMenuItem newGame;
+    private JMenuItem exit;
+    private JMenuItem undo;
 
-    public GFrame(int w, int h, int bomb) {
-
-        loadData = new LoadData();
-
+    public GFrame(final int w, final int h, final int boom) {
         this.setJMenuBar(this.mnb = new JMenuBar());
         this.mnb.add(this.menu = new JMenu("Game"));
-        this.menu.add(new JMenuItem("Undo"));
+        this.menu.add(this.newGame = new JMenuItem("New game"));
+        this.menu.addSeparator();
+        this.menu.add(this.basic = new JMenuItem("Basic"));
+        this.menu.add(this.normal = new JMenuItem("Normal"));
+        this.menu.add(this.hard = new JMenuItem("Hard"));
+        this.menu.addSeparator();
+        this.menu.add(this.undo = new JMenuItem("Undo"));
+        this.menu.addSeparator();
+        this.menu.add(this.exit = new JMenuItem("Exit"));
+        if (w == 8) {
+            this.basic.setIcon(new ImageIcon((Image)this.loadData.getListImage().get("tick")));
+        } else if (w == 16) {
+            this.normal.setIcon(new ImageIcon((Image)this.loadData.getListImage().get("tick")));
+        } else {
+            this.hard.setIcon(new ImageIcon((Image)this.loadData.getListImage().get("tick")));
+        }
 
-        setJMenuBar(mnb = new JMenuBar());
-        mnb.add(menu = new JMenu("Game"));
-
-        menu.add(NewGame = new JMenuItem("New Game"));
-        menu.addSeparator();
-
-        menu.add(Beginner = new JMenuItem("Beginner")); 
-        menu.add(Intermediate = new JMenuItem("Intermediate"));
-        menu.add(Expert = new JMenuItem("Expert"));
-
-        menu.addSeparator();
-        menu.add(Exit = new JMenuItem("Exit"));
-        
-
-        //
-        if (w==8) {
-            Beginner.setIcon(new ImageIcon(loadData.getListImage().get("tick")));
-         } else if (w==16) {
-            Intermediate.setIcon (new ImageIcon(loadData.getListImage().get("tick"))):
-         } else {
-            Expert.setIcon(new ImageIcon(loadData.getListImage().get("tick")));
-         }
-        
-
-         Beginner.addActionListener(new ActionListener() {
-            @Override
+        this.basic.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                    setVisible(false);
-                    new GFrame(8, 8, 10);
-         }
+                GFrame.this.setVisible(false);
+                new GFrame(8, 8, 10);
+            }
         });
-        Intermediate.addActionListener(new ActionListener() {
-            @Override
+        this.normal.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                    setVisible(false);
-                    new GFrame(16,16, 40);
-         }
+                GFrame.this.setVisible(false);
+                new GFrame(16, 16, 40);
+            }
         });
-        Expert.addActionListener(new ActionListener() {
-            @Override
+        this.hard.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                    setVisible(false);
-                    new GFrame(30, 16, 99);
-         }
+                GFrame.this.setVisible(false);
+                new GFrame(16, 30, 99);
+            }
         });
-        NewGame.addActionListener(new ActionListener() {
-            @Override
+        this.newGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                    setVisible(false);
-                    new GFrame(w, h, bomb);
-         }
+                GFrame.this.setVisible(false);
+                new GFrame(w, h, boom);
+            }
         });
-        Exit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                    System.exit(0);
-         }
+        this.undo.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                GFrame.this.getGamePanel().getCoreGame().undo();
+            }
         });
-
-        add(gamePanel = new GPanel(w, h, bomb, this));
-        setIconImage(loadData.getListImage().get("title"));
-        pack();
-        setResizable(false);
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
+        this.exit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        this.add(this.gamePanel = new GPanel(w, h, boom, this));
+        this.setIconImage((Image)this.loadData.getListImage().get("title"));
+        this.pack();
+        this.setResizable(false);
+        this.setLocationRelativeTo((Component)null);
+        this.setDefaultCloseOperation(3);
+        this.setVisible(true);
     }
 
     public static void main(String[] args) {
