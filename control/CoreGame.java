@@ -1,63 +1,69 @@
 package control;
 
 import java.util.Random;
+import java.util.Stack;
+
 import view.MineButton;
 import view.ButtonSmile;
-
-import view.LabelNumber;
-
-import view.MineButton;
 import view.GPanel;
+import view.LabelNumber;
 
 public class CoreGame {
 
     private Random rd;
+
     private MineButton[][] arrayButton;
     private int[][] arrayBomb;
-    private boolean[][] arrayBoolean;
-<<<<<<< HEAD
-    private boolean isLost; // Change from isComplete to isLost
-    private boolean isWon; // Change from isEnd to isWon
-    private int bomb;
-    private boolean[][] arrayPflat;
 
-    private Stack<int[]> stateStack;
-=======
-    private boolean isComplete;
-    private boolean isEnd;
+    private boolean[][] arrayBoolean;
+
+    private boolean[][] arrayFlag;
+    private int flag;
+
+    private boolean isLost;
+    private boolean isWin;
+
+    private ButtonSmile buttonSmile;
+    private LabelNumber lbTime, lbBomb;
+
     private int bomb;
->>>>>>> 87d476e76c239b9069d6fd1121ac688432a29e64
 
     private GPanel game;
-    private LabelNumber lbTime;
-    private LabelNumber lbBoom;
+    private Stack<int[]> stateStack;
 
     public CoreGame(int w, int h, int bomb, GPanel game) {
 
+        stateStack = new Stack<int[]>();
         this.game = game;
         this.bomb = bomb;
 
         arrayButton = new MineButton[w][h];
         arrayBomb = new int[w][h];
         arrayBoolean = new boolean[w][h];
+        arrayFlag = new boolean[w][h];
 
         rd = new Random();
 
-        createArrayBomb(bomb, w, h);
-        point();
+        createBombArray(bomb, w, h);
+        tileNumber();
 
+        for (int i = 0; i < arrayButton.length; i++){
+            for (int j = 0; j < arrayButton[i].length; j++)
+                System.out.print(arrayBomb[i][j] + " ");
+            System.out.println();
+        }
     }
 
     public boolean clickDouble(int i, int j) {
 
-        boolean isBombH = false;
+        boolean isBomb = false;
 
         for (int l = i - 1; l <= i + 1; l++) {
             for (int k = j - 1; k <= j + 1; k++) {
                 if (l >= 0 && l <= arrayBomb.length - 1 && k >= 0 && k <= arrayBomb[i].length - 1) {
-                    if (!arrayPflat[l][k]) {
-                        if (arrayBomb[l][k] == -1) 
-                            isBombH = true;
+                    if (!arrayFlag[l][k]) {
+                        if (arrayBomb[l][k] == -1) {
+                            isBomb = true;
                             arrayButton[l][k].setNumber(12);
                             arrayButton[l][k].repaint();
                             arrayBoolean[l][k] = true;
@@ -75,7 +81,7 @@ public class CoreGame {
             }
         }
 
-        if (isBombH) {
+        if (isBomb) {
             for (int j2 = 0; j2 < arrayBoolean.length; j2++) {
                 for (int k = 0; k < arrayBoolean[i].length; k++) {
                     if (arrayBomb[j2][k] == -1 && !arrayBoolean[j2][k]) {
@@ -88,43 +94,33 @@ public class CoreGame {
         }
 
         return true;
-
-    public void fullTrue() {
     }
 
-    public boolean isEnd() {
-        return this.isEnd;
-    }
-}
+    public void flag(int i, int j) {
+        if (!arrayBoolean[i][j]) {
+            if (arrayFlag[i][j]) {
+                flag--;
+                arrayFlag[i][j] = false;
+                arrayButton[i][j].setNumber(-1);
+                arrayButton[i][j].repaint();
+                game.getP1().updateLbBomb();
+            } else if (flag < bomb) {
+                flag++;
+                arrayFlag[i][j] = true;
+                arrayButton[i][j].setNumber(9);
+                arrayButton[i][j].repaint();
+                game.getP1().updateLbBomb();
+            }
+        }
 
-    public void Pflat(int i, int j) {
-		if (!arrayBoolean[i][j]) {
-			if (arrayPflat[i][j]) {
-				flat--;
-				arrayPflat[i][j] = false;
-				arrayButton[i][j].setNumber(-1);
-				arrayButton[i][j].repaint();
-				game.getP1().updateLbBoom();
-			} else if (flat < bomb) {
-				co++;
-				arrayPflat[i][j] = true;
-				arrayButton[i][j].setNumber(9);
-				arrayButton[i][j].repaint();
-				game.getP1().updateLbBoom();
-			}
-		}
+    }
 
     public boolean open(int i, int j) {
 
-        if (!isComplete && !isEnd) {
+        if (!isLost && !isWin) {
             if (!arrayBoolean[i][j]) {
-<<<<<<< HEAD
-
-                int[] array = { i, j };
+                int[] array = {i, j};
                 stateStack.push(array);
-
-=======
->>>>>>> 87d476e76c239b9069d6fd1121ac688432a29e64
                 if (arrayBomb[i][j] == 0) {
 
                     arrayBoolean[i][j] = true;
@@ -132,7 +128,23 @@ public class CoreGame {
                     arrayButton[i][j].repaint();
 
                     if (checkWin()) {
-                        isEnd = true;
+                        isWin = true;
+
+                        return false;
+                    }
+
+                    for (int l = i - 1; l <= i + 1; l++) {
+                        for (int k = j - 1; k <= j + 1; k++) {
+                            if (l >= 0 && l <= arrayBomb.length - 1 && k >= 0 && k <= arrayBomb[i].length - 1) {
+                                if (!arrayBoolean[l][k]) {
+                                    open(l, k);
+                                }
+                            }
+                        }
+                    }
+
+                    if (checkWin()) {
+                        isWin = true;
 
                         return false;
                     }
@@ -149,7 +161,7 @@ public class CoreGame {
                         arrayButton[i][j].repaint();
 
                         if (checkWin()) {
-                            isEnd = true;
+                            isWin = true;
 
                             return false;
                         }
@@ -162,7 +174,7 @@ public class CoreGame {
             if (arrayBomb[i][j] == -1) {
                 arrayButton[i][j].setNumber(11);
                 arrayButton[i][j].repaint();
-                isComplete = true;
+                isLost = true;
 
                 for (int j2 = 0; j2 < arrayBoolean.length; j2++) {
                     for (int k = 0; k < arrayBoolean[i].length; k++) {
@@ -179,7 +191,7 @@ public class CoreGame {
             } else {
 
                 if (checkWin()) {
-                    isEnd = true;
+                    isWin = true;
 
                     return false;
                 }
@@ -207,53 +219,40 @@ public class CoreGame {
             return false;
     }
 
-    public void point() {
-        for (int i = 0; i < arrayBomb.length; i++) {
-            for (int j = 0; j < arrayBomb[i].length; j++) {
+    public void tileNumber() {
+        for (int i = 0; i < arrayBomb.length; i++)
+            for (int j = 0; j < arrayBomb[i].length; j++)
                 if (arrayBomb[i][j] == 0) {
                     int count = 0;
-                    for (int l = i - 1; l <= i + 1; l++) {
-                        for (int k = j - 1; k <= j + 1; k++) {
+                    for (int l = i - 1; l <= i + 1; l++)
+                        for (int k = j - 1; k <= j + 1; k++)
                             if (l >= 0 && l <= arrayBomb.length - 1 && k >= 0 && k <= arrayBomb[i].length - 1)
-                                if (arrayBomb[l][k] == -1) {
+                                if (arrayBomb[l][k] == -1)
                                     count++;
-                                }
-                        }
-                    }
                     arrayBomb[i][j] = count;
                 }
-            }
-        }
     }
 
-    public void createArrayBomb(int boom, int w, int h) {
-<<<<<<< HEAD
-        // Simplify the code
+    public void createBombArray(int boom, int w, int h) {
         int count = 0;
-=======
-        int locationX = rd.nextInt(w);
-        int locationY = rd.nextInt(h);
-
-        arrayBomb[locationX][locationY] = -1;
-        int count = 1;
->>>>>>> 87d476e76c239b9069d6fd1121ac688432a29e64
         while (count != boom) {
-            locationX = rd.nextInt(w);
-            locationY = rd.nextInt(h);
+            int locationX = rd.nextInt(w);
+            int locationY = rd.nextInt(h);
             if (arrayBomb[locationX][locationY] != -1) {
-
                 arrayBomb[locationX][locationY] = -1;
-
-                count = 0;
-                for (int i = 0; i < arrayBomb.length; i++) {
-                    for (int j = 0; j < arrayBomb[i].length; j++) {
-                        if (arrayBomb[i][j] == -1)
-                            count++;
-                    }
-                }
+                count += 1;
             }
         }
 
+    }
+
+    public void undo() {
+        if (!stateStack.empty() && !isLost && !isWin) {
+            int[] array = stateStack.pop();
+            arrayButton[array[0]][array[1]].setNumber(-1);
+            arrayButton[array[0]][array[1]].repaint();
+            arrayBoolean[array[0]][array[1]] = false;
+        }
     }
 
     public void fullTrue() {
@@ -270,8 +269,32 @@ public class CoreGame {
         return arrayButton;
     }
 
-    public void setArrayButton(MineButton[][] arrayButton) {
+    public void setMineButton(MineButton[][] arrayButton) {
         this.arrayButton = arrayButton;
+    }
+
+    public ButtonSmile getButtonSmile() {
+        return buttonSmile;
+    }
+
+    public void setButtonSmile(ButtonSmile buttonSmile) {
+        this.buttonSmile = buttonSmile;
+    }
+
+    public LabelNumber getLbTime() {
+        return lbTime;
+    }
+
+    public void setLbTime(LabelNumber lbTime) {
+        this.lbTime = lbTime;
+    }
+
+    public LabelNumber getLbBomb() {
+        return lbBomb;
+    }
+
+    public void setLbBomb(LabelNumber lbBomb) {
+        this.lbBomb = lbBomb;
     }
 
     public boolean[][] getArrayBoolean() {
@@ -282,37 +305,36 @@ public class CoreGame {
         this.arrayBoolean = arrayBoolean;
     }
 
-        public boolean isComplete() {
-            return this.isComplete;
-        }
-
-        public void setComplete(boolean isComplete) {
-            this.isComplete = isComplete;
-        }
-
-        public boolean isEnd() {
-            return this.isEnd;
-        }
-
-        public void setEnd(boolean isEnd) {
-            this.isEnd = isEnd;
-        }
-    }
-    public void setLbTime(LabelNumber lbTime) {
-        this.lbTime = lbTime;
+    public boolean isLost() {
+        return isLost;
     }
 
-    public LabelNumber getLbBoom() {
-        return this.lbBoom;
+    public void setLost(boolean isLost) {
+        this.isLost = isLost;
     }
 
-    public void setLbBoom(LabelNumber lbBoom) {
-        this.lbBoom = lbBoom;
+    public boolean isWin() {
+        return isWin;
     }
 
+    public void setWin(boolean isWin) {
+        this.isWin = isWin;
     }
 
+    public boolean[][] getArrayFlag() {
+        return arrayFlag;
+    }
 
+    public void setArrayFlag(boolean[][] arrayFlag) {
+        this.arrayFlag = arrayFlag;
+    }
 
+    public int getFlag() {
+        return flag;
+    }
 
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
 
+}
