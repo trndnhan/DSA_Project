@@ -6,13 +6,19 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import model.LoadData;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.*;
 
-public class GFrame extends JFrame {
+import model.LoadData;
 
-    private LoadData loadData;
+
+
+public class GameFrame extends JFrame {
+
+    private LoadData loadData = new LoadData();
+    private GPanel gamePanel;
     private JMenuBar mnb;
-    private GPanel gPanel;
     private JMenu menu;
     private JMenuItem Beginner,Intermediate,Expert,NewGame,Exit;
     private static final long serialVersionUID = 1L;
@@ -29,7 +35,7 @@ public class GFrame extends JFrame {
         mnb.add(menu = new JMenu("Game"));
 
         menu.add(NewGame = new JMenuItem("New Game"));
-        menu.addSeparator();
+        menu.addSeperator();
 
         menu.add(Beginner = new JMenuItem("Beginner")); 
         menu.add(Intermediate = new JMenuItem("Intermediate"));
@@ -43,7 +49,7 @@ public class GFrame extends JFrame {
         if (w==8) {
             Beginner.setIcon(new ImageIcon(loadData.getListImage().get("tick")));
          } else if (w==16) {
-            Intermediate.setIcon (new ImageIcon(loadData.getListImage().get("tick")));
+            Intermediate.setIcon (new ImageIcon(loadData.getListImage().get("tick"))):
          } else {
             Expert.setIcon(new ImageIcon(loadData.getListImage().get("tick")));
          }
@@ -51,29 +57,29 @@ public class GFrame extends JFrame {
 
          Beginner.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                    setVisible(false);
+            public void actionPerformed(ActionEvent e) {
+                    GFrame.setVisible(false);
                     new GFrame(8, 8, 10);
          }
         });
         Intermediate.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                    setVisible(false);
+            public void actionPerformed(ActionEvent e) {
+                    GFrame.setVisible(false);
                     new GFrame(16,16, 40);
          }
         });
         Expert.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                    setVisible(false);
+            public void actionPerformed(ActionEvent e) {
+                    GFrame.setVisible(false);
                     new GFrame(30, 16, 99);
          }
         });
         NewGame.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(java.awt.event.ActionEvent e) {
-                    setVisible(false);
+            public void actionPerformed(ActionEvent e) {
+                    GFrame.setVisible(false);
                     new GFrame(w, h, bomb);
          }
         });
@@ -84,7 +90,14 @@ public class GFrame extends JFrame {
          }
         });
 
-        add(gPanel = new GPanel(w, h, bomb, this));
+        add(gamePanel = new GPanel(w, h, bomb, this));
+
+        this.undo.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                gamePanel.getCoreGame().undo();
+            }
+        });
+        this.add(this.gamePanel = new GPanel(w, h, bomb, this));
         setIconImage(loadData.getListImage().get("title"));
         pack();
         setResizable(false);
@@ -98,7 +111,7 @@ public class GFrame extends JFrame {
     }
 
     public LoadData getLoadData() {
-        return loadData;
+        return this.loadData;
     }
 
     public void setLoadData(LoadData loadData) {
@@ -106,10 +119,10 @@ public class GFrame extends JFrame {
     }
 
     public GPanel getGamePanel() {
-        return gPanel;
+        return this.gamePanel;
     }
 
-    public void setGamePanel(GPanel gPanel) {
-        this.gPanel = gPanel;
+    public void setGamePanel(GPanel gamePanel) {
+        this.gamePanel = gamePanel;
     }
 }

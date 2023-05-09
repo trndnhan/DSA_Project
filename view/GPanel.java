@@ -1,11 +1,13 @@
 package view;
 
+import control.CoreGame;
 import java.awt.BorderLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
+import javax.security.sasl.SaslClient;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
 
 import control.CoreGame;
 
@@ -134,5 +136,9 @@ public class GPanel extends JPanel implements MouseListener {
 
     public void setP2(PanelPlayer p) {
         this.p = p;
+    }
+
+    public SaslClient getCoreGame() {
+        return null;
     }
 }

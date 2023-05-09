@@ -1,10 +1,16 @@
 package view;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
 
-import javax.swing.JButton;
-
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.Timer;
 public class MineButton extends JButton {
 
     private int number;
@@ -16,6 +22,8 @@ public class MineButton extends JButton {
         this.p = p;
         setPreferredSize(new Dimension(30, 30));
     }
+
+
 
     @Override
     public void paint(Graphics g) {

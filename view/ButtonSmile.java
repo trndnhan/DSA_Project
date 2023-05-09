@@ -2,8 +2,9 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.ImageObserver;
 import javax.swing.JButton;
-
 public class ButtonSmile extends JButton {
     private static final long serialVersionUID = 1L;
     public static final int win = 0;

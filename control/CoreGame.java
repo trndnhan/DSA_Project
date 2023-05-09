@@ -1,6 +1,10 @@
 package control;
 
 import java.util.Random;
+import view.MineButton;
+import view.ButtonSmile;
+
+import view.LabelNumber;
 
 import view.MineButton;
 import view.GPanel;
@@ -11,11 +15,22 @@ public class CoreGame {
     private MineButton[][] arrayButton;
     private int[][] arrayBomb;
     private boolean[][] arrayBoolean;
+<<<<<<< HEAD
+    private boolean isLost; // Change from isComplete to isLost
+    private boolean isWon; // Change from isEnd to isWon
+    private int bomb;
+    private boolean[][] arrayPflat;
+
+    private Stack<int[]> stateStack;
+=======
     private boolean isComplete;
     private boolean isEnd;
     private int bomb;
+>>>>>>> 87d476e76c239b9069d6fd1121ac688432a29e64
 
     private GPanel game;
+    private LabelNumber lbTime;
+    private LabelNumber lbBoom;
 
     public CoreGame(int w, int h, int bomb, GPanel game) {
 
@@ -33,10 +48,83 @@ public class CoreGame {
 
     }
 
+    public boolean clickDouble(int i, int j) {
+
+        boolean isBombH = false;
+
+        for (int l = i - 1; l <= i + 1; l++) {
+            for (int k = j - 1; k <= j + 1; k++) {
+                if (l >= 0 && l <= arrayBomb.length - 1 && k >= 0 && k <= arrayBomb[i].length - 1) {
+                    if (!arrayPflat[l][k]) {
+                        if (arrayBomb[l][k] == -1) 
+                            isBombH = true;
+                            arrayButton[l][k].setNumber(12);
+                            arrayButton[l][k].repaint();
+                            arrayBoolean[l][k] = true;
+                        } else if (!arrayBoolean[l][k]) {
+                            if (arrayBomb[l][k] == 0) {
+                                open(l, k);
+                            } else {
+                                arrayButton[l][k].setNumber(arrayBomb[l][k]);
+                                arrayButton[l][k].repaint();
+                                arrayBoolean[l][k] = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (isBombH) {
+            for (int j2 = 0; j2 < arrayBoolean.length; j2++) {
+                for (int k = 0; k < arrayBoolean[i].length; k++) {
+                    if (arrayBomb[j2][k] == -1 && !arrayBoolean[j2][k]) {
+                        arrayButton[j2][k].setNumber(10);
+                        arrayButton[j2][k].repaint();
+                    }
+                }
+            }
+            return false;
+        }
+
+        return true;
+
+    public void fullTrue() {
+    }
+
+    public boolean isEnd() {
+        return this.isEnd;
+    }
+}
+
+    public void Pflat(int i, int j) {
+		if (!arrayBoolean[i][j]) {
+			if (arrayPflat[i][j]) {
+				flat--;
+				arrayPflat[i][j] = false;
+				arrayButton[i][j].setNumber(-1);
+				arrayButton[i][j].repaint();
+				game.getP1().updateLbBoom();
+			} else if (flat < bomb) {
+				co++;
+				arrayPflat[i][j] = true;
+				arrayButton[i][j].setNumber(9);
+				arrayButton[i][j].repaint();
+				game.getP1().updateLbBoom();
+			}
+		}
+
     public boolean open(int i, int j) {
 
         if (!isComplete && !isEnd) {
             if (!arrayBoolean[i][j]) {
+<<<<<<< HEAD
+
+                int[] array = { i, j };
+                stateStack.push(array);
+
+=======
+>>>>>>> 87d476e76c239b9069d6fd1121ac688432a29e64
                 if (arrayBomb[i][j] == 0) {
 
                     arrayBoolean[i][j] = true;
@@ -139,11 +227,16 @@ public class CoreGame {
     }
 
     public void createArrayBomb(int boom, int w, int h) {
+<<<<<<< HEAD
+        // Simplify the code
+        int count = 0;
+=======
         int locationX = rd.nextInt(w);
         int locationY = rd.nextInt(h);
 
         arrayBomb[locationX][locationY] = -1;
         int count = 1;
+>>>>>>> 87d476e76c239b9069d6fd1121ac688432a29e64
         while (count != boom) {
             locationX = rd.nextInt(w);
             locationY = rd.nextInt(h);
@@ -189,19 +282,37 @@ public class CoreGame {
         this.arrayBoolean = arrayBoolean;
     }
 
-    public boolean isComplete() {
-        return isComplete;
+        public boolean isComplete() {
+            return this.isComplete;
+        }
+
+        public void setComplete(boolean isComplete) {
+            this.isComplete = isComplete;
+        }
+
+        public boolean isEnd() {
+            return this.isEnd;
+        }
+
+        public void setEnd(boolean isEnd) {
+            this.isEnd = isEnd;
+        }
+    }
+    public void setLbTime(LabelNumber lbTime) {
+        this.lbTime = lbTime;
     }
 
-    public void setComplete(boolean isComplete) {
-        this.isComplete = isComplete;
+    public LabelNumber getLbBoom() {
+        return this.lbBoom;
     }
 
-    public boolean isEnd() {
-        return isEnd;
+    public void setLbBoom(LabelNumber lbBoom) {
+        this.lbBoom = lbBoom;
     }
 
-    public void setEnd(boolean isEnd) {
-        this.isEnd = isEnd;
     }
-}
+
+
+
+
+
