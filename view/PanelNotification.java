@@ -1,28 +1,24 @@
 package view;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.*;
-
+import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.Timer;
 
 public class PanelNotification extends JPanel {
-
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
-
-    private JPanel p11, p12, p13;
-
-    private LabelNumber lbTime, lbBomb;
-
+    private JPanel p11;
+    private JPanel p12;
+    private JPanel p13;
+    private LabelNumber lbTime;
+    private LabelNumber lbBomb;
     private GPanel game;
-
     private ButtonSmile bt;
-
     private Timer time;
     private int nowTime;
 
@@ -45,46 +41,30 @@ public class PanelNotification extends JPanel {
                 PanelNotification.this.updateLbTime();
             }
         });
-
-        p12.add(lbTime = new LabelNumber(this, "000"));
-
-        time = new Timer(1000, new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                nowTime++;
-                updateLbTime();
-            }
-        });
-
         this.p13.add(this.bt = new ButtonSmile(this));
         this.bt.addMouseListener(new MouseListener() {
-
-            @Override
             public void mouseReleased(MouseEvent e) {
                 PanelNotification.this.bt.setStage(4);
                 PanelNotification.this.bt.repaint();
-                int option = JOptionPane.showConfirmDialog((Component)null, "Are you play new game?", "Notification", 0);
+                int option = JOptionPane.showConfirmDialog((Component)null, "Do you want to play a new game?", "NEW GAME", 0);
                 if (option == 0) {
-                    PanelNotification.this.getGame().getGameFrame().setVisible(false);
-                    new GFrame(game.getW(), game.getH(), game.getBomb());
+                    PanelNotification.this.getGame().getGFrame().setVisible(false);
+                    new GFrame(game.getW(), game.getH(), game.getBoom());
                 }
 
             }
 
-            @Override
             public void mousePressed(MouseEvent e) {
-                if (!PanelNotification.this.getGame().getWorld().isEnd() && !PanelNotification.this.getGame().getWorld().isComplete()) {
+                if (!PanelNotification.this.getGame().getCoreGame().isWin() && !PanelNotification.this.getGame().getCoreGame().isLost()) {
                     PanelNotification.this.bt.setStage(2);
                     PanelNotification.this.bt.repaint();
                 } else {
-                    PanelNotification.this.getGame().getGameFrame().setVisible(false);
-                    new GFrame(game.getW(), game.getH(), game.getBomb());
+                    PanelNotification.this.getGame().getGFrame().setVisible(false);
+                    new GFrame(game.getW(), game.getH(), game.getBoom());
                 }
 
             }
 
-            @Override
             public void mouseExited(MouseEvent e) {
             }
 
@@ -98,7 +78,7 @@ public class PanelNotification extends JPanel {
 
     public void updateLbTime() {
         if (this.nowTime > 999) {
-            this.lbTime.setNumber("voCuc");
+            this.lbTime.setNumber("inf");
         } else {
             String cTime = String.valueOf(this.nowTime);
             if (cTime.length() == 1) {
@@ -115,20 +95,20 @@ public class PanelNotification extends JPanel {
     }
 
     public void updateLbBomb() {
-        String bomb = String.valueOf(this.game.getBomb() - this.game.getWorld().getCo());
-        if (bomb.length() == 1) {
-            this.lbBomb.setNumber("00" + bomb);
-        } else if (bomb.length() == 2) {
-            this.lbBomb.setNumber("0" + bomb);
+        String boom = String.valueOf(this.game.getBoom() - this.game.getCoreGame().getFlag());
+        if (boom.length() == 1) {
+            this.lbBomb.setNumber("00" + boom);
+        } else if (boom.length() == 2) {
+            this.lbBomb.setNumber("0" + boom);
         } else {
-            this.lbBomb.setNumber("0" + bomb);
+            this.lbBomb.setNumber("0" + boom);
         }
 
         this.lbBomb.repaint();
     }
 
     public GPanel getGame() {
-        return game;
+        return this.game;
     }
 
     public void setGame(GPanel game) {
@@ -144,11 +124,10 @@ public class PanelNotification extends JPanel {
     }
 
     public ButtonSmile getBt() {
-        return bt;
+        return this.bt;
     }
 
     public void setBt(ButtonSmile bt) {
         this.bt = bt;
     }
-
 }
