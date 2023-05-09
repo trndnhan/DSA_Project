@@ -24,6 +24,8 @@ public class LabelNumber extends JLabel {
         setPreferredSize(new Dimension(78, 46));
     }
 
+
+
     @Override
     public void paint(Graphics g) {
         if (number.equals("infinity")) {
