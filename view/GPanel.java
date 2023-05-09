@@ -1,96 +1,103 @@
 package view;
 
 import control.CoreGame;
+import control.CoreGame;
 import java.awt.BorderLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.security.sasl.SaslClient;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-
-import control.CoreGame;
-
 public class GPanel extends JPanel implements MouseListener {
-    private PanelPlayer p;
-
+    private PanelNotification p1;
+    private PanelPlayer p2;
     private GFrame gameFrame;
-
     private CoreGame coreGame;
-
     private int w;
     private int h;
-    private int bomb;
+    private int boom;
 
-    public GPanel(int w, int h, int bomb, GFrame gameFrame) {
-
+    public GPanel(int w, int h, int boom, GFrame gameFrame) {
         this.gameFrame = gameFrame;
-
-        this.bomb = bomb;
+        this.boom = boom;
         this.w = w;
         this.h = h;
-
-        coreGame = new CoreGame(w, h, bomb, this);
-
-        setLayout(new BorderLayout(20, 20));
-
-        add(p = new PanelPlayer(this), BorderLayout.CENTER);
+        this.coreGame = new CoreGame(w, h, boom, this);
+        this.setLayout(new BorderLayout(20, 20));
+        this.add(this.p1 = new PanelNotification(this), "North");
+        this.add(this.p2 = new PanelPlayer(this), "Center");
     }
 
-    @Override
     public void mouseClicked(MouseEvent e) {
     }
 
-    @Override
     public void mousePressed(MouseEvent e) {
-        MineButton[][] arrayButton = p.getArrayButton();
-        for (int i = 0; i < arrayButton.length; i++) {
-            for (int j = 0; j < arrayButton[i].length; j++) {
-                if (e.getButton() == 1 && e.getSource() == arrayButton[i][j]) {
+        this.getP1().getBt().setStage(3);
+        this.getP1().getBt().repaint();
+        MineButton[][] arrayButton = this.p2.getArrayButton();
 
-                    if (!coreGame.open(i, j)) {
+        for(int i = 0; i < arrayButton.length; ++i) {
+            for(int j = 0; j < arrayButton[i].length; ++j) {
+                int option;
+                if (e.getButton() == 1 && e.getSource() == arrayButton[i][j] && !this.coreGame.getArrayFlag()[i][j]) {
+                    if (!this.getP1().getTime().isRunning()) {
+                        this.getP1().getTime().start();
+                    }
 
-                        if (coreGame.isComplete()) {
-
-                            int option = JOptionPane.showConfirmDialog(this, "Wanna play again ?", "You lost!",
-                                    JOptionPane.YES_NO_OPTION);
-                            if (option == JOptionPane.YES_OPTION) {
-                                gameFrame.setVisible(false);
-                                new GFrame(w, h, bomb);
+                    if (!this.coreGame.open(i, j)) {
+                        if (this.coreGame.isLost()) {
+                            this.getP1().getTime().stop();
+                            this.getP1().getBt().setStage(1);
+                            this.getP1().getBt().repaint();
+                            option = JOptionPane.showConfirmDialog(this, "Wanna replay?", "YOU LOSE!", 0);
+                            if (option == 0) {
+                                this.gameFrame.setVisible(false);
+                                new GFrame(this.w, this.h, this.boom);
                             } else {
-                                coreGame.fullTrue();
+                                this.coreGame.fullTrue();
                             }
-                        } else if (coreGame.isEnd()) {
-
-                            int option = JOptionPane.showConfirmDialog(this, "Wanna play again ?", "You win!",
-                                    JOptionPane.YES_NO_OPTION);
-                            if (option == JOptionPane.YES_OPTION) {
-                                gameFrame.setVisible(false);
-                                new GFrame(w, h, bomb);
+                        } else if (this.coreGame.isWin()) {
+                            this.getP1().getTime().stop();
+                            this.getP1().getBt().setStage(0);
+                            this.getP1().getBt().repaint();
+                            option = JOptionPane.showConfirmDialog(this, "Wanna replay??", "YOU WIN!", 0);
+                            if (option == 0) {
+                                this.gameFrame.setVisible(false);
+                                new GFrame(this.w, this.h, this.boom);
                             }
                         }
                     }
+                } else if (e.getButton() == 3 && e.getSource() == arrayButton[i][j]) {
+                    this.coreGame.flag(i, j);
+                }
+
+                if (e.getClickCount() == 2 && e.getSource() == arrayButton[i][j] && this.coreGame.getArrayBoolean()[i][j] && !this.coreGame.clickDouble(i, j)) {
+                    option = JOptionPane.showConfirmDialog(this, "Wanna replay?", "YOU LOSE!", 0);
+                    if (option == 0) {
+                        this.gameFrame.setVisible(false);
+                        new GFrame(this.w, this.h, this.boom);
+                    } else {
+                        this.coreGame.fullTrue();
+                    }
                 }
             }
-
         }
+
     }
 
-
-    @Override
     public void mouseReleased(MouseEvent e) {
+        this.getP1().getBt().setStage(4);
+        this.getP1().getBt().repaint();
     }
 
-    @Override
     public void mouseEntered(MouseEvent e) {
     }
 
-    @Override
     public void mouseExited(MouseEvent e) {
     }
 
     public int getW() {
-        return w;
+        return this.w;
     }
 
     public void setW(int w) {
@@ -98,47 +105,50 @@ public class GPanel extends JPanel implements MouseListener {
     }
 
     public int getH() {
-        return h;
+        return this.h;
     }
 
     public void setH(int h) {
         this.h = h;
     }
 
-    public CoreGame getWorld() {
-        return coreGame;
+    public CoreGame getCoreGame() {
+        return this.coreGame;
     }
 
-    public void setWorld(CoreGame coreGame) {
+    public void setCoreGame(CoreGame coreGame) {
         this.coreGame = coreGame;
     }
 
-    public GFrame getGameFrame() {
-        return gameFrame;
+    public GFrame getGFrame() {
+        return this.gameFrame;
     }
 
-    public void setGameFrame(GFrame gameFrame) {
+    public void setGFrame(GFrame gameFrame) {
         this.gameFrame = gameFrame;
     }
 
-    public int getBomb() {
-        return bomb;
+    public int getBoom() {
+        return this.boom;
     }
 
-    public void setBomb(int bomb) {
-        this.bomb = bomb;
+    public void setBoom(int boom) {
+        this.boom = boom;
     }
 
+    public PanelNotification getP1() {
+        return this.p1;
+    }
+
+    public void setP1(PanelNotification p1) {
+        this.p1 = p1;
+    }
 
     public PanelPlayer getP2() {
-        return p;
+        return this.p2;
     }
 
-    public void setP2(PanelPlayer p) {
-        this.p = p;
-    }
-
-    public SaslClient getCoreGame() {
-        return null;
+    public void setP2(PanelPlayer p2) {
+        this.p2 = p2;
     }
 }
