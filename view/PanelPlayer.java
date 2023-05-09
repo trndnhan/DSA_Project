@@ -1,34 +1,30 @@
 package view;
 
 import java.awt.GridLayout;
-
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 public class PanelPlayer extends JPanel {
-
     private GPanel game;
-
     private MineButton[][] arrayButton;
 
     public PanelPlayer(GPanel game) {
         this.game = game;
+        this.setLayout(new GridLayout(game.getW(), game.getH()));
+        this.arrayButton = game.getCoreGame().getArrayButton();
+        this.setBorder(BorderFactory.createLoweredBevelBorder());
 
-        setLayout(new GridLayout(game.getW(), game.getH()));
-
-        arrayButton = game.getWorld().getArrayButton();
-
-        setBorder(BorderFactory.createLoweredBevelBorder());
-        for (int i = 0; i < arrayButton.length; i++) {
-            for (int j = 0; j < arrayButton[i].length; j++) {
-                add(arrayButton[i][j] = new MineButton(this));
-                arrayButton[i][j].addMouseListener(game);
+        for(int i = 0; i < this.arrayButton.length; ++i) {
+            for(int j = 0; j < this.arrayButton[i].length; ++j) {
+                this.add(this.arrayButton[i][j] = new MineButton(this));
+                this.arrayButton[i][j].addMouseListener(game);
             }
         }
+
     }
 
     public MineButton[][] getArrayButton() {
-        return arrayButton;
+        return this.arrayButton;
     }
 
     public void setArrayButton(MineButton[][] arrayButton) {
@@ -36,11 +32,10 @@ public class PanelPlayer extends JPanel {
     }
 
     public GPanel getGame() {
-        return game;
+        return this.game;
     }
 
     public void setGame(GPanel game) {
         this.game = game;
     }
-
 }
