@@ -47,7 +47,7 @@ public class CoreGame {
         createBombArray(bomb, w, h);
         tileNumber();
 
-        for (int i = 0; i < arrayButton.length; i++){
+        for (int i = 0; i < arrayButton.length; i++) {
             for (int j = 0; j < arrayButton[i].length; j++)
                 System.out.print(arrayBomb[i][j] + " ");
             System.out.println();
@@ -119,7 +119,7 @@ public class CoreGame {
 
         if (!isLost && !isWin) {
             if (!arrayBoolean[i][j]) {
-                int[] array = {i, j};
+                int[] array = { i, j };
                 stateStack.push(array);
                 if (arrayBomb[i][j] == 0) {
 
@@ -233,9 +233,9 @@ public class CoreGame {
                 }
     }
 
-    public void createBombArray(int boom, int w, int h) {
+    public void createBombArray(int bomb, int w, int h) {
         int count = 0;
-        while (count != boom) {
+        while (count != bomb) {
             int locationX = rd.nextInt(w);
             int locationY = rd.nextInt(h);
             if (arrayBomb[locationX][locationY] != -1) {
