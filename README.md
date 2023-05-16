@@ -3,10 +3,10 @@ A project for Data Structures &amp; Algorithms course
 
 * About team:
 
-1. Trần Đình An
-2. Đinh Quang Hiển
-3. Nguyễn Vạn Huy
-4. Lê Thế Duyệt
+1. Trần Đình An      -  ITDSIU20113
+2. Đinh Quang Hiển   -  ITITIU20201
+3. Nguyễn Vạn Huy    -  ITITIU20215
+4. Lê Thế Duyệt      -  ITITIU19112
 
 * About game:
 + Game's name: MineSweeper
