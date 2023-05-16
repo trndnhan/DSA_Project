@@ -10,7 +10,7 @@ A project for Data Structures &amp; Algorithms course
 
 * About game:
 + Game's name: MineSweeper
-+ Game's Genre: 2D, Choosen Game
++ Game's Genre: 2D, Chosen Game
 + Game's Rule: The objective is to clear a rectangular board containing hidden "mines" without detonating any of them, using clues about the number of neighboring mines in each uncovered square
 
 * UML class diagram: 
