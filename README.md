@@ -22,6 +22,7 @@ We have also implemented an undo function using Stack! Everytime you clicked som
 P/S: The undo function does not take into account the case where you click on an 0 cell, it does allow you to revert the whole area you just open and you have to revert cell by cell. T.T
 
 * How to play the game, you asked?
+
 You just have to download this whole projecct into you driver (you don't have to download the report file though). Open this project with your IDE, looking for the main method in the 'GFrame' class and there we go. Enjoy your game!
 
 * UML: https://drive.google.com/file/d/1wv2g-dvHvPhhRLvDCFDg24P-HkHMozDb/view?usp=sharing
